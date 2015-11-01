@@ -1,0 +1,52 @@
+<%= @client %>
+<br>
+<%= @token %>
+
+<div class="container">
+  <div class="row">
+    <h3>Schedule</h3>
+    <div class="column">
+      <table class="table">
+        <tbody>
+        	<tr>
+        		<td>Status</td>
+        		<td>Registered At</td>
+        		<td>paid?</td>
+        		<td>Paid with</td>
+        		<td>Event Name</td>
+        		<td>Event Start time</td>
+        		<td>Staff</td>
+        		<td>Location</td>
+        		<td>Address</td>
+        	</tr>
+          <% @visits.each do |visit| %>
+          <% if visit["status"] == "enrolled" %>
+            <tr>
+            	<td><%= visit["status"] %></td>
+            	<td><%= visit["registered_at"] %></td>
+            	<td><%= visit["paid"] %></td>
+            	<td><%= visit["paid_for_by"] %></td>
+            	<td><%= visit["event_occurrence"]["name"] %></td>
+            	<td><%= visit["event_occurrence"]["start_at"] %></td>
+            	<td>
+	            	<% @staff_members, @location = getEventOccurrence(visit["event_occurrence"]["id"], @token) %>
+	            	<% unless @staff_members == nil %>
+		            	<% @staff_members.each do |staff| %>
+		            		<%= staff["name"] %> 
+		            	<% end %>
+		            <% end %>
+	        	</td>
+	        	<td>
+	        		<%= @location["name"] %>
+	        	</td>
+	        	<td>
+	        		<%= @location["address"] %>
+	        	</td>
+            </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+This is my token: <%= @token %>
+<br>
+This is my email: <%= @email %>
+<br>
+<div class="container">
+  <div class="row">
+    <h3>Clients</h3>
+    <div class="column">
+      <table class="table">
+        <tbody>
+          <% @people.each do |person| %>
+            <tr>
+            	<td><%= image_tag(person["profile_photo"]["x50"]) if  person["profile_photo"] != nil %></td>
+            	<td><%= link_to person["name"], client_path(:id => person["id"], :token=>@token) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
