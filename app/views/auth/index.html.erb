@@ -11,11 +11,21 @@ This is my email: <%= @email %>
           <% @people.each do |person| %>
             <tr>
             	<td><%= image_tag(person["profile_photo"]["x50"]) if  person["profile_photo"] != nil %></td>
-            	<td><%= link_to person["name"], client_path(:id => person["id"], :token=>@token) %></td>
+            	<td><%= link_to person["name"], client_path(:id => person["id"]) %></td>
             </tr>
           <% end %>
         </tbody>
       </table>
+
+      
+      <% if @page.to_i < @page_count %>
+      <%= link_to "Next Page", url_for(params.merge(:page => @page.to_i+1) ) %>
+      <% end %>
+
+      <% if @page.to_i > 1 %>
+      <%= link_to "Previous Page", url_for(params.merge(:page => @page.to_i-1) )%>
+      <% end %>
+
     </div>
   </div>
 </div>

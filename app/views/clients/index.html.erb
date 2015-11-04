@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <h1>Select a client</h1>
+    <p>Select a client to view a printable schedule.</p>
+    <div class="column">
+     
+     <ul class="media-list">
+          <% @people.each do |person| %>
+            <li class="media">
+              <div class="pull-left">
+                <% if person["profile_photo"] != nil %>
+                  <%= image_tag(person["profile_photo"]["x50"], :class=>"media-object")  %>
+                <% else %>
+                  <%= image_tag("avatar.jpeg", :class=>"media-object", :size=>"50") %>
+                <% end %> 
+              </div>
+              <div class="pull-left">
+                <%= link_to person["name"], client_path(:id => person["id"], :name=>person["first_name"]) %>
+              </div>
+            </li>
+          <% end %>
+      </ul>
+      
+      
+
+      <% if @page.to_i > 1 %>
+      <%= link_to "Previous Page", url_for(params.merge(:page => @page.to_i-1)), :class=> "btn btn-default pull-left"  %>
+      <% end %>
+
+      <% if @page.to_i < @page_count %>
+      <%= link_to "Next Page", url_for(params.merge(:page => @page.to_i+1)), :class=>"btn btn-default pull-left"  %>
+      <% end %>
+
+    </div>
+  </div>
+</div>

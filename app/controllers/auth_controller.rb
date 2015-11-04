@@ -9,21 +9,11 @@ class AuthController < ApplicationController
 		             }.to_json,
 		    :headers => { 'Content-Type' => 'application/json' } )
 
-		@token = @result["access_token"]
+		Rails.application.secrets.token = @result["access_token"]
 
-		@email = getEmail(@token)
-
-		@people = getClients(@token)
+		redirect_to "/clients"
 	end
 
-	def getEmail(auth)
-	  	@result = HTTParty.get(Rails.application.secrets.fd_domain+"/api/v2/front/people/me.json?client_id="+Rails.application.secrets.fd_key+"&access_token="+auth) 
-	  	return @result["people"].first["email"]
-	end
-
-	def getClients(auth)
-		@result = HTTParty.get(Rails.application.secrets.fd_domain+"/api/v2/desk/people.json?client_id="+Rails.application.secrets.fd_key+"&access_token="+auth) 
-	  	return @result["people"]
-	end
+	
 	
 end

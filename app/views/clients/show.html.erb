@@ -1,33 +1,32 @@
-<%= @client %>
-<br>
-<%= @token %>
-
 <div class="container">
   <div class="row">
-    <h3>Schedule</h3>
-    <div class="column">
+    <div class="row">
+      <div class="col-md-8">
+      <% if params["name"]%>
+        <h1><%= params["name"] %>'s Schedule</h1>
+      <% else %>
+        <h1>Schedule</h1>
+      <% end %>
+      </div>
+      <div class="col-md-4">
+        <a href="javascript:if(window.print)window.print()" class="btn btn-default pull-right no-print">Print</a>
+      </div>
+    </div>
+    <div class="">
       <table class="table">
         <tbody>
         	<tr>
-        		<td>Status</td>
-        		<td>Registered At</td>
-        		<td>paid?</td>
-        		<td>Paid with</td>
         		<td>Event Name</td>
         		<td>Event Start time</td>
-        		<td>Staff</td>
+        		<td>Staff Members</td>
         		<td>Location</td>
         		<td>Address</td>
         	</tr>
           <% @visits.each do |visit| %>
           <% if visit["status"] == "enrolled" %>
             <tr>
-            	<td><%= visit["status"] %></td>
-            	<td><%= visit["registered_at"] %></td>
-            	<td><%= visit["paid"] %></td>
-            	<td><%= visit["paid_for_by"] %></td>
             	<td><%= visit["event_occurrence"]["name"] %></td>
-            	<td><%= visit["event_occurrence"]["start_at"] %></td>
+            	<td><%= visit["event_occurrence"]["start_at"].to_time.strftime("%A, %B %C at %u:%M %p") %></td>
             	<td>
 	            	<% @staff_members, @location = getEventOccurrence(visit["event_occurrence"]["id"], @token) %>
 	            	<% unless @staff_members == nil %>
@@ -49,4 +48,6 @@
       </table>
     </div>
   </div>
+
+  <%= link_to "Back to Clients List", "/clients", :class=>"no-print btn btn-default" %>
 </div>

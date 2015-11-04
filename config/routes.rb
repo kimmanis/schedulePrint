@@ -6,6 +6,7 @@ Rails.application.routes.draw do
    root 'home#index'
 
    get 'auth' => "auth#index"
+   get '/clients' => 'clients#index', as: 'clients'
    get '/client/:id' => 'clients#show', as: 'client'
 
 

@@ -35,7 +35,6 @@ img {
 // to make views framework-neutral
 main {
   @extend .container;
-  background-color: #eee;
   padding-bottom: 80px;
   width: 100%;
   margin-top: 51px; // accommodate the navbar
@@ -79,4 +78,16 @@ section {
   @extend .btn;
   @extend .btn-primary;
   @extend .btn-xs;
+}
+.btn-success{
+  background-color: #4c9d2f;
+  border-color: #4c9d2f;
+}
+
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
 }
