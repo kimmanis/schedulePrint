@@ -9,7 +9,7 @@ class AuthController < ApplicationController
 		             }.to_json,
 		    :headers => { 'Content-Type' => 'application/json' } )
 
-		Rails.application.secrets.token = @result["access_token"]
+		session["token"] = @result["access_token"]
 
 		redirect_to "/clients"
 	end

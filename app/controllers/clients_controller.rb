@@ -2,7 +2,7 @@ class ClientsController < ApplicationController
 	
 	# list clients
 	def index
-		@token = Rails.application.secrets.token
+		@token = session["token"]
 
 		if @token
 			@email = getEmail(@token)
@@ -16,7 +16,7 @@ class ClientsController < ApplicationController
 	#view client's schedule
 	def show
 		@client = params[:id]
-		@token = Rails.application.secrets.token
+		@token = session["token"]
 
 		if @token
 			@visits = getVisits(@client, @token)
@@ -28,18 +28,18 @@ class ClientsController < ApplicationController
 	# get info from FD API
 
 	def getVisits(id, auth)
-	  @result = HTTParty.get(Rails.application.secrets.fd_domain+"/api/v2/desk/people/"+id+"/visits.json?per_page=100&client_id="+Rails.application.secrets.fd_key+"&access_token="+auth) 
+	  @result = HTTParty.get(session["domain"]+"/api/v2/desk/people/"+id+"/visits.json?per_page=100&client_id="+Rails.application.secrets.fd_key+"&access_token="+auth) 
 	  return  @result["visits"]
 	end
 
 	def getEmail(auth)
-	  	@result = HTTParty.get(Rails.application.secrets.fd_domain+"/api/v2/front/people/me.json?client_id="+Rails.application.secrets.fd_key+"&access_token="+auth) 
+	  	@result = HTTParty.get(session["domain"]+"/api/v2/front/people/me.json?client_id="+Rails.application.secrets.fd_key+"&access_token="+auth) 
 	  	return @result["people"].first["email"]
 	end
 
 	def getClients(auth, page)
 		per_page = 50
-		@result = HTTParty.get(Rails.application.secrets.fd_domain+
+		@result = HTTParty.get(session["domain"]+
 			"/api/v2/desk/people.json?page=" + page.to_s + 
 			"&per_page=" + per_page.to_s + 
 			"&client_id=" + Rails.application.secrets.fd_key +
