@@ -35,8 +35,7 @@ Rails.application.configure do
   # yet still be able to expire them through the digest params.
   config.assets.digest = true
 
-  # Disable Rails's static asset server (Apache or nginx will already do this)
-config.serve_static_assets = false
+
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
