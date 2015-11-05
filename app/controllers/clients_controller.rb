@@ -20,6 +20,7 @@ class ClientsController < ApplicationController
 
 		if @token
 			@visits = getVisits(@client, @token)
+			#@reportingVisits = getReportingVisits(@client, @token)
 		else
 			redirect_to root_url, :alert => "Please sign in with Front Desk"
 		end
@@ -30,6 +31,24 @@ class ClientsController < ApplicationController
 	def getVisits(id, auth)
 	  @result = HTTParty.get(session["domain"]+"/api/v2/desk/people/"+id+"/visits.json?per_page=100&client_id="+Rails.application.secrets.fd_key+"&access_token="+auth) 
 	  return  @result["visits"]
+	end
+
+
+	# TODO get this working
+	def getReportingVisits(id, auth)
+
+		@endpoint = session["domain"]+"/desk/api/v3/reports/enrollments/queries?client_id="+Rails.application.secrets.fd_key+"&access_token="+auth
+		@json_string = 
+				[:data=>
+					[:type=>"queries", 
+						:attributes=>
+						[:filter=>  ['and', [['eq', 'person_id', id], ["eq", "state", "registered"]]] ]
+						]].to_json
+
+
+		@result = HTTParty.post(@endpoint, :body=>@json_string)
+		return @result
+
 	end
 
 	def getEmail(auth)
